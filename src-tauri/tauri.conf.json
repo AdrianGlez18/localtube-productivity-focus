@@ -9,12 +9,15 @@
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
+  
   "app": {
     "windows": [
       {
         "title": "localtube",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": true,
+        "decorations": true
       }
     ],
     "security": {

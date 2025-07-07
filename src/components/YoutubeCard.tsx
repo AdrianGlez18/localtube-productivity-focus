@@ -1,0 +1,102 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import type { YoutubeAPIVideo } from '../types/youtube-api';
+
+type YouTubeCardProps = {
+  video: YoutubeAPIVideo;
+  videoId: string;
+  saveToWatchLater: (video: YoutubeAPIVideo) => void;
+  saveToCollection: (video: YoutubeAPIVideo) => void;
+};
+
+const YouTubeCard: React.FC<YouTubeCardProps> = ({
+  video,
+  videoId,
+  saveToWatchLater,
+  saveToCollection,
+}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    snippet: { thumbnails, title, channelTitle, publishedAt },
+  } = video;
+
+  const formattedDate = new Date(publishedAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const handleVideoClick = () => {
+    navigate(`/video/${videoId}`);
+  };
+
+  return (
+    <div className="relative w-full sm:max-w-sm md:max-w-md bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="cursor-pointer" onClick={handleVideoClick}>
+        <div className="w-full h-48 bg-gray-200">
+          {!imageLoaded && (
+            <div className="animate-pulse w-full h-full bg-gray-300" />
+          )}
+          <img
+            src={thumbnails?.medium?.url || ''}
+            alt={title}
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            className={`w-full h-48 object-cover transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </div>
+      </div>
+
+      <div className="p-4">
+        <h2
+          className="text-lg font-semibold text-gray-900 cursor-pointer hover:underline"
+          onClick={handleVideoClick}
+        >
+          {title}
+        </h2>
+        <p className="text-sm text-gray-600">{channelTitle}</p>
+        <p className="text-xs text-gray-500 mt-1">{formattedDate}</p>
+      </div>
+
+      <div className="absolute top-2 right-2">
+        <div className="relative">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-gray-700 hover:text-black p-1 rounded-full bg-white shadow-sm"
+          >
+            ⋮
+          </button>
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+              <button
+                onClick={() => {
+                  saveToWatchLater(video);
+                  setMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Save to Watch Later
+              </button>
+              <button
+                onClick={() => {
+                  saveToCollection(video);
+                  setMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Save to Collection
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default YouTubeCard;

@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { setLikedVideo } from "@/db/liked-videos";
 
 type YouTubeCardProps = {
   video: YoutubeAPIVideo;
@@ -21,7 +22,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
   saveToWatchLater,
   saveToCollection,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  /* const [menuOpen, setMenuOpen] = useState(false); */
   const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
 
@@ -78,7 +79,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
 
             <Tooltip>
               <TooltipTrigger>
-                <ClockPlus className="w-6 h-6 text-gray-600 cursor-pointer" />
+                <ClockPlus className="w-6 h-6 text-gray-600 cursor-pointer" onClick={()=> setLikedVideo(video)}/>
               </TooltipTrigger>
               <TooltipContent className="bg-white p-2 rounded-lg shadow-md border border-gray-200">
                 <p className="text-sm font-medium text-gray-900">Watch later</p>
@@ -102,7 +103,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
         <p className="text-xs text-gray-500 mt-1">{formattedDate}</p>
       </div>
 
-      <div className="absolute top-2 right-2">
+      {/* <div className="absolute top-2 right-2">
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -133,7 +134,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

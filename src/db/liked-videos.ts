@@ -19,7 +19,7 @@ export async function setLikedVideo(video: YoutubeAPIVideo) {
 
         await db.execute("INSERT INTO liked_videos (title, thumbnail, youtube_id, date_liked) VALUES ($1, $2, $3, $4)", [
             video.snippet.title,
-            video.snippet.thumbnails.standard?.url,
+            video.snippet.thumbnails.standard?.url || video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url,
             video.id,
             Date.now()
         ]);

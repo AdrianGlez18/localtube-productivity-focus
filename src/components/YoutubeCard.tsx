@@ -10,21 +10,16 @@ import {
 import { setLikedVideo } from "@/db/liked-videos";
 
 type YouTubeCardProps = {
-  video: YoutubeAPIVideo;
-  videoId: string;
-  saveToWatchLater: (video: YoutubeAPIVideo) => void;
-  saveToCollection: (video: YoutubeAPIVideo) => void;
+  video: YoutubeAPIVideo
 };
 
 const YouTubeCard: React.FC<YouTubeCardProps> = ({
-  video,
-  videoId,
-  saveToWatchLater,
-  saveToCollection,
+  video
 }) => {
   /* const [menuOpen, setMenuOpen] = useState(false); */
   const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
+  const videoId = video.id;
 
   const {
     snippet: { thumbnails, title, channelTitle, publishedAt },

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -118,3 +119,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.font-handwritten {
+  font-family: "Gloria Hallelujah", cursive;
+} 

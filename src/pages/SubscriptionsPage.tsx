@@ -9,8 +9,8 @@ const SubscriptionsPage = () => {
     useEffect(() => {
         async function getChannels() {
             try {
-                const likedVideos = await getSubscriptions();
-                setChannels(likedVideos);
+                const userSubs = await getSubscriptions();
+                setChannels(userSubs);
             } catch (err) {
                 console.error(err);
             }
@@ -26,7 +26,7 @@ const SubscriptionsPage = () => {
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 my-3">
                 {
                     channels.map((channel: Subscription) => (
-                        <ChannelCard channel={channel} />
+                        <ChannelCard key={channel.channel_id} channel={channel} />
                     ))
                 }
             </div>

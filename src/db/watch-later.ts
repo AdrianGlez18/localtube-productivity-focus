@@ -1,23 +1,23 @@
-import { LikedVideo } from "@/types/sqlite-schemas";
+import { WatchLaterVideo } from "@/types/sqlite-schemas";
 import { YoutubeAPIVideo } from "@/types/youtube-api";
 import Database from "@tauri-apps/plugin-sql";
 
-export async function getLikedVideos() {
+export async function getWatchLaterVideos() {
     try {
         const db = await Database.load("sqlite:database.db");
-        const dbLikedVideos = await db.select<LikedVideo[]>("SELECT * FROM liked_videos");
-        return dbLikedVideos;
+        const dbWatchLater = await db.select<WatchLaterVideo[]>("SELECT * FROM watch_later");
+        return dbWatchLater;
     } catch (error) {
         console.log(error);
         return [];
     }
 }
 
-export async function setLikedVideo(video: YoutubeAPIVideo) {
+export async function setWatchLaterVideo(video: YoutubeAPIVideo) {
     try {
         const db = await Database.load("sqlite:database.db");
 
-        await db.execute("INSERT INTO liked_videos (title, thumbnail, youtube_id, author, date_liked) VALUES ($1, $2, $3, $4, $5)", [
+        await db.execute("INSERT INTO watch_later (title, thumbnail, youtube_id, author, date_added) VALUES ($1, $2, $3, $4, $5)", [
             video.snippet.title,
             video.snippet.thumbnails.standard?.url || video.snippet.thumbnails.medium?.url || video.snippet.thumbnails.default?.url,
             video.id,

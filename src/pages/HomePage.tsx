@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { YoutubeAPIVideo } from '@/types/youtube-api';
-import YoutubeCard from '@/components/YoutubeCard';
 import { fetchYoutubeSearchResults } from '@/lib/youtube';
 import { cn } from '@/lib/utils';
+import YoutubeCard from '@/components/YoutubeCard';
 
 const HomePage = () => { 
   const [query, setQuery] = useState('');
@@ -79,15 +79,17 @@ const HomePage = () => {
       </div>
 
       {submittedQuery && (
-        <div className="mt-4 px-6 space-y-4">
+        <div className="mt-4 px-6 space-y-4 @container">
           {isSearching ? (
             <p className="text-center text-lg">Loading...</p>
           ) : results.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                {results.map((video) => (
-                  <YoutubeCard key={video.id} video={video}/>
-                ))}
+              <div className="grid grid-cols-1 @xl:grid-cols-2 @5xl:grid-cols-3 @7xl:grid-cols-4 gap-4">
+                {results.map((video) => {
+                  return typeof video.id === 'string' ? (
+                    <YoutubeCard key={video.id} video={video}/>
+                  ) : null;
+                })}
               </div>
 
               <div className="flex justify-center gap-12 my-6">

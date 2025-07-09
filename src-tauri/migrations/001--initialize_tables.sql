@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS liked_videos (
     title TEXT NOT NULL,
     thumbnail TEXT NOT NULL,
     youtube_id TEXT NOT NULL,
+    author TEXT NOT NULL,
     date_liked TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS watch_later (
@@ -10,6 +11,7 @@ CREATE TABLE IF NOT EXISTS watch_later (
     title TEXT NOT NULL,
     thumbnail TEXT NOT NULL,
     youtube_id TEXT NOT NULL,
+    author TEXT NOT NULL,
     date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS video_collection (

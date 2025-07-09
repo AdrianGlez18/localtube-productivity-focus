@@ -7,13 +7,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { setLikedVideo } from "@/db/liked-videos";
+import { setWatchLaterVideo } from "@/db/watch-later";
 
 type YouTubeCardProps = {
   video: YoutubeAPIVideo
 };
 
-const YouTubeCard: React.FC<YouTubeCardProps> = ({
+const YoutubeCard: React.FC<YouTubeCardProps> = ({
   video
 }) => {
   /* const [menuOpen, setMenuOpen] = useState(false); */
@@ -74,7 +74,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
 
             <Tooltip>
               <TooltipTrigger>
-                <ClockPlus className="w-6 h-6 text-gray-600 cursor-pointer" onClick={()=> setLikedVideo(video)}/>
+                <ClockPlus className="w-6 h-6 text-gray-600 cursor-pointer" onClick={()=> setWatchLaterVideo(video)}/>
               </TooltipTrigger>
               <TooltipContent className="bg-white p-2 rounded-lg shadow-md border border-gray-200">
                 <p className="text-sm font-medium text-gray-900">Watch later</p>
@@ -134,4 +134,4 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({
   );
 };
 
-export default YouTubeCard;
+export default YoutubeCard;

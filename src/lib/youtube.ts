@@ -57,6 +57,8 @@ export const fetchYoutubeSearchResults = async (
       ...item,
       id: item.id.videoId || item.id, // Normalize id
     }));
+
+    console.log("Items: ", items)
   
     return {
       items,

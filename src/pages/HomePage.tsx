@@ -52,7 +52,7 @@ const HomePage = () => {
             submittedQuery ? 'text-2xl' : 'text-6xl'
           )}
         >
-          Customtube
+          FOCUSTUBE
         </h1>
 
         <form

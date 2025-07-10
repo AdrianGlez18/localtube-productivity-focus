@@ -79,3 +79,42 @@ export const fetchChannelData = async (channelId: string) => {
     return {};
   }
 };
+
+export const fetchChannelVideos = async (
+  channelId: string,
+  pageToken?: string
+): Promise<{
+  items: YoutubeAPIVideo[];
+  nextPageToken?: string;
+  prevPageToken?: string;
+}> => {
+  const params = new URLSearchParams({
+    key: YOUTUBE_API_KEY,
+    channelId,
+    part: 'snippet',
+    type: 'video',
+    maxResults: '20',
+    order: 'date', 
+  });
+
+  if (pageToken) params.set('pageToken', pageToken);
+
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/search?${params.toString()}`
+  );
+
+  const data = await response.json();
+
+  const items: YoutubeAPIVideo[] = data.items.map((item: any) => ({
+    ...item,
+    id: item.id.videoId || item.id, // Normalize id
+  }));
+
+  console.log("Items: ", items)
+
+  return {
+    items,
+    nextPageToken: data.nextPageToken,
+    prevPageToken: data.prevPageToken,
+  };
+} 

@@ -40,16 +40,16 @@ const HomePage = () => {
     <div className="h-full w-full bg-white dark:bg-black text-black dark:text-white transition-all flex flex-col">
       <div
         className={cn(
-          'flex items-center justify-center transition-all duration-700 gap-4',
+          'flex items-center justify-center transition-all duration-700 gap-4 align-middle',
           submittedQuery
-            ? 'items-start px-6 pt-4 space-y-2 flex-row'
+            ? 'px-6 pt-4 space-y-2 flex-row h-24 flex items-center justify-center'
             : 'h-screen overflow-hidden space-y-6 flex-col'
         )}
       >
         <h1
           className={cn(
             'font-handwritten transition-all duration-700',
-            submittedQuery ? 'text-2xl' : 'text-6xl'
+            submittedQuery ? 'text-2xl text-center' : 'text-6xl'
           )}
         >
           FOCUSTUBE

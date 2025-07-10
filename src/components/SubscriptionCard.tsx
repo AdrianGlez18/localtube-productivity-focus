@@ -12,6 +12,7 @@ const ChannelCard: React.FC<ChannelCardProps> = ({
   const navigate = useNavigate();
   
   const handleViewChannel = () => {
+    console.log('navigating to: ', channel.channel_id);
     navigate(`/channel/${channel.channel_id}`);
   };
 

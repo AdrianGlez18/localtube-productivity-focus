@@ -16,14 +16,15 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLikeLoading, setIsLikeLoading] = useState(false);
 
   const handleSubscription = async () => {
     if (!isSubscribed) {
       try {
         setIsLoading(true);
         const sub = await setSubscription(video);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
         if (sub) {
           setIsSubscribed(true);
         } else {
@@ -39,9 +40,11 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
   const handleLike = async () => {
     if (!isLiked) {
       try {
-        setIsLikeLoading(true);
+        setIsLoading(true);
         const liked = await setLikedVideo(video);
-        setIsLikeLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 300);
         if (liked) {
           setIsLiked(true);
         } else {
@@ -49,7 +52,7 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
         }
       } catch {
         console.error("Error when liking video. Please, try again later.");
-        setIsLikeLoading(false);
+        setIsLoading(false);
       }
     }
   }
@@ -103,7 +106,7 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
         
         <button 
         onClick={handleLike}
-        disabled={isLikeLoading}
+        disabled={isLoading}
         className={cn(
           'px-4 py-2 rounded transition-all duration-300 cursor-pointer hover:scale-105 flex items-center gap-2',
           isLiked

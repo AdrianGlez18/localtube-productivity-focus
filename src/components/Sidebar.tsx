@@ -7,6 +7,7 @@ import {
   ThumbsUp,
   Users,
   Menu,
+  Settings
 } from 'lucide-react';
 
 const items = [
@@ -22,27 +23,44 @@ const Sidebar = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className={`h-screen bg-white border-r shadow-sm transition-all duration-300 ${expanded ? 'w-60' : 'w-16'}`}>
-      <div className="flex items-center justify-between px-4 py-4">
-        {expanded && <h1 className="text-xl font-bold">YouTube Lite</h1>}
-        <button onClick={() => setExpanded(!expanded)}>
-          <Menu />
-        </button>
+    <div className="h-screen flex items-center justify-center">
+      <div className={`
+        min-h-1/2 bg-white border border-black m-4 rounded-2xl overflow-hidden
+         hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+         hover:translate-x-[2px] hover:translate-y-[2px]
+        transition-all duration-300 flex flex-col ${expanded ? 'w-60' : 'w-16'}`}>
+        <div className="flex items-center justify-between px-4 py-4">
+          {expanded && <h1 className="text-xl font-bold font-handwritten">FOCUSTUBE</h1>}
+          <button onClick={() => setExpanded(!expanded)}>
+            <Menu />
+          </button>
+        </div>
+        <div className="flex flex-col flex-1 justify-between">
+          <nav className="mt-4">
+            {items.map(({ name, path, icon }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 ${pathname === path ? 'bg-gray-100 font-medium' : ''
+                  } ${!expanded && 'justify-center'}`}
+              >
+                {icon}
+                {expanded && <span>{name}</span>}
+              </Link>
+            ))}
+          </nav>
+          <div className="mb-4">
+            <Link
+              to={'/settings'}
+              className={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 ${pathname === '/settings' ? 'bg-gray-100 font-medium' : ''
+                } ${!expanded && 'justify-center'}`}
+            >
+              <Settings size={20} />
+              {expanded && <span>Settings</span>}
+            </Link>
+          </div>
+        </div>
       </div>
-      <nav className="mt-4">
-        {items.map(({ name, path, icon }) => (
-          <Link
-            key={path}
-            to={path}
-            className={`flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-100 ${
-              pathname === path ? 'bg-gray-100 font-medium' : ''
-            }`}
-          >
-            {icon}
-            {expanded && <span>{name}</span>}
-          </Link>
-        ))}
-      </nav>
     </div>
   );
 };

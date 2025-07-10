@@ -5,6 +5,15 @@ import { setSubscription, checkIfSubscribed } from '@/db/subscriptions';
 import { setLikedVideo, checkIfVideoLiked } from '@/db/liked-videos';
 import { cn } from '@/lib/utils';
 import { ThumbsUp } from 'lucide-react';
+import { toast } from 'sonner';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lite-youtube': any;
+    }
+  }
+}
 
 type Props = {
   video: YoutubeAPIVideo;
@@ -44,14 +53,15 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
         const liked = await setLikedVideo(video);
         setTimeout(() => {
           setIsLoading(false);
+          toast.success('Video added to liked videos');
         }, 300);
         if (liked) {
           setIsLiked(true);
         } else {
-          console.error("Error when liking video. Please, try again later.");
+          toast.error('Error when liking video. Please, try again later.');
         }
       } catch {
-        console.error("Error when liking video. Please, try again later.");
+        toast.error('Error when liking video. Please, try again later.');
         setIsLoading(false);
       }
     }

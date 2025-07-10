@@ -3,6 +3,7 @@ import { getLikedVideos } from "@/db/liked-videos";
 import { LikedVideo } from "@/types/sqlite-schemas";
 import { useNavigate } from "react-router-dom";
 import VideoCollectionGrid from "@/components/VideoCollectionGrid";
+import { toast } from "sonner";
 
 const LikedVideosPage = () => {
     const [videos, setVideos] = useState<LikedVideo[]>([]);
@@ -18,7 +19,7 @@ const LikedVideosPage = () => {
                 setVideos(likedVideos);
             } catch (err) {
                 setError("Failed to load liked videos");
-                console.error(err);
+                toast.error("Failed to load liked videos");
             } finally {
                 setIsLoading(false);
             }

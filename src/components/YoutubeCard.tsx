@@ -8,16 +8,18 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { setWatchLaterVideo } from "@/db/watch-later";
+import { toast } from "sonner";
+import AddToCollectionModal from "./AddToCollectionModal";
 
 type YouTubeCardProps = {
-  video: YoutubeAPIVideo
+  video: YoutubeAPIVideo;
 };
 
-const YoutubeCard: React.FC<YouTubeCardProps> = ({
-  video
-}) => {
+const YoutubeCard: React.FC<YouTubeCardProps> = ({ video }) => {
   /* const [menuOpen, setMenuOpen] = useState(false); */
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
   const videoId = video.id;
 
@@ -33,6 +35,26 @@ const YoutubeCard: React.FC<YouTubeCardProps> = ({
 
   const handleVideoClick = () => {
     navigate(`/video/${videoId}`);
+  };
+
+  const handleWatchLater = async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const res = await setWatchLaterVideo(video);
+      setTimeout(() => {
+        setIsLoading(false);
+        if (res) {
+          toast.success("Video added to watch later");
+        } else {
+          toast.error(
+            "Error when adding to watch later. Please, try again later."
+          );
+        }
+      }, 500);
+    } catch (error) {
+      toast.error("Error when adding to watch later. Please, try again later.");
+    }
   };
 
   return (
@@ -74,7 +96,13 @@ const YoutubeCard: React.FC<YouTubeCardProps> = ({
 
             <Tooltip>
               <TooltipTrigger>
-                <ClockPlus className="w-6 h-6 text-gray-600 cursor-pointer" onClick={()=> setWatchLaterVideo(video)}/>
+                <button
+                  className="disabled:opacity-50 transition-colors flex items-center gap-1 p-1 rounded-md"
+                  onClick={handleWatchLater}
+                  disabled={isLoading}
+                >
+                  <ClockPlus className="w-6 h-6 text-gray-600 hover:text-blue-300 transition-all duration-300 hover:scale-105 cursor-pointer disabled:cursor-not-allowed disabled:text-gray-400" />
+                </button>{" "}
               </TooltipTrigger>
               <TooltipContent className="bg-white p-2 rounded-lg shadow-md border border-gray-200">
                 <p className="text-sm font-medium text-gray-900">Watch later</p>
@@ -83,12 +111,19 @@ const YoutubeCard: React.FC<YouTubeCardProps> = ({
 
             <Tooltip>
               <TooltipTrigger>
-                <BookmarkPlus className="w-6 h-6 text-gray-600 cursor-pointer" />
+                <button
+                  className="disabled:opacity-50 transition-colors flex items-center gap-1 p-1 rounded-md"
+                  onClick={() => setOpenModal(true)}
+                  disabled={isLoading}
+                >
+                  <BookmarkPlus className="w-6 h-6 text-gray-600 hover:text-blue-300 transition-all duration-300 hover:scale-105 cursor-pointer disabled:cursor-not-allowed disabled:text-gray-400" />
+                </button>{" "}
               </TooltipTrigger>
               <TooltipContent className="bg-white p-2 rounded-lg shadow-md border border-gray-200">
                 <p className="text-sm font-medium text-gray-900">Save to collection</p>
               </TooltipContent>
             </Tooltip>
+
           </div>
         </div>
         <p className="text-sm text-gray-600 overflow-hidden overflow-ellipsis whitespace-nowrap">
@@ -130,6 +165,20 @@ const YoutubeCard: React.FC<YouTubeCardProps> = ({
           )}
         </div>
       </div> */}
+
+{openModal && (
+        <AddToCollectionModal
+          video={video}
+          onClose={(saved) => {
+            setOpenModal(false);
+            if (saved) {
+              toast.success("Video added to collection");
+            } else {
+              toast.error("Error when adding to collection. Please, try again later.");
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

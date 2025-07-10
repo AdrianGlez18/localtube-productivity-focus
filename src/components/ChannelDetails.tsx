@@ -1,19 +1,6 @@
-
-import React from 'react'
 import YoutubeCard from './YoutubeCard';
 import { YoutubeAPIVideo } from '@/types/youtube-api';
-
-const formatLargeNumbers = (num: number) => {
-    if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(2) + 'B';
-    } else if (num >= 1000000) {
-        return (num / 1000000).toFixed(2) + 'M';
-    } else if (num >= 1000) {
-        return (num / 1000).toFixed(2) + 'K';
-    } else {
-        return num.toString();
-    }
-}
+import { formatLargeNumbers } from '@/lib/utils';
 
 const ChannelDetails = ({channel, videos}: {channel: any, videos: any}) => {
   const {

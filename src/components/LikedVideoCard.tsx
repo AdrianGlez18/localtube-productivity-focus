@@ -1,5 +1,4 @@
 import { LikedVideo } from '@/types/sqlite-schemas'
-import React from 'react'
 
 type LikedVideoCardProps = {
     video: LikedVideo;

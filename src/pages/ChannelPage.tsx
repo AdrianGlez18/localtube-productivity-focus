@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {fetchChannelData, fetchChannelVideos} from '@/lib/youtube';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import ChannelDetails from '@/components/ChannelDetails';
 import { YoutubeAPIVideo } from '@/types/youtube-api';
 
@@ -15,25 +16,21 @@ const ChannelPage = () => {
 
     async function getChannel() {
         try {
-            console.log('fetching: ', id);
             const data = await fetchChannelData(id!);
-            console.log(data);
             setChannel(data);
         } catch (error) {
-            console.log(error);
+            toast.error('Failed to load channel data');
         }
     }
 
     async function getVideos(page?: string) {
         try {
-            console.log('fetching videos: ', id);
             const data = await fetchChannelVideos(id!, page);
             setNextPageToken(data.nextPageToken);
             setPrevPageToken(data.prevPageToken);
-            console.log("videos: ", data.items);
             setVideos(data.items);
         } catch (error) {
-            console.log(error);
+            toast.error('Failed to load videos');
         }
     }
 

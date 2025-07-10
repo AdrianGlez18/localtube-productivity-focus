@@ -31,3 +31,14 @@ export async function setLikedVideo(video: YoutubeAPIVideo) {
         return false;
     }
 }
+
+export async function checkIfVideoLiked(id: string) {
+    try {
+        const db = await Database.load("sqlite:database.db");
+        const result = await db.select<{ count: number }[]>("SELECT COUNT(*) as count FROM liked_videos WHERE youtube_id = $1", [id]);
+        return result[0].count > 0;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

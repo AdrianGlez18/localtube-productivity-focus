@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import '@justinribeiro/lite-youtube';
 import type { YoutubeAPIVideo } from '../types/youtube-api';
 import { setSubscription, checkIfSubscribed } from '@/db/subscriptions';
+import { setLikedVideo, checkIfVideoLiked } from '@/db/liked-videos';
 import { cn } from '@/lib/utils';
+import { ThumbsUp } from 'lucide-react';
 
 type Props = {
   video: YoutubeAPIVideo;
@@ -12,7 +14,9 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
   const { id, snippet } = video;
 
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLikeLoading, setIsLikeLoading] = useState(false);
 
   const handleSubscription = async () => {
     if (!isSubscribed) {
@@ -32,6 +36,24 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
     }
   }
 
+  const handleLike = async () => {
+    if (!isLiked) {
+      try {
+        setIsLikeLoading(true);
+        const liked = await setLikedVideo(video);
+        setIsLikeLoading(false);
+        if (liked) {
+          setIsLiked(true);
+        } else {
+          console.error("Error when liking video. Please, try again later.");
+        }
+      } catch {
+        console.error("Error when liking video. Please, try again later.");
+        setIsLikeLoading(false);
+      }
+    }
+  }
+
   useEffect(() => {
     const checkSubscriptionStatus = async () => {
       try {
@@ -42,7 +64,17 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
       }
     };
     
+    const checkLikeStatus = async () => {
+      try {
+        const isAlreadyLiked = await checkIfVideoLiked(id);
+        setIsLiked(isAlreadyLiked);
+      } catch (error) {
+        console.error("Error checking like status:", error);
+      }
+    };
+    
     checkSubscriptionStatus();
+    checkLikeStatus();
   }, []);
 
   return (
@@ -67,6 +99,19 @@ const VideoDetails: React.FC<Props> = ({ video }) => {
             : 'bg-red-600 text-white  hover:bg-red-700'
         )}>
           {isSubscribed ? 'Subscribed ✔️' : 'Subscribe'}
+        </button>
+        
+        <button 
+        onClick={handleLike}
+        disabled={isLikeLoading}
+        className={cn(
+          'px-4 py-2 rounded transition-all duration-300 cursor-pointer hover:scale-105 flex items-center gap-2',
+          isLiked
+            ? 'bg-blue-600 text-white hover:bg-blue-700'
+            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+        )}>
+          <ThumbsUp size={18} />
+          {isLiked ? 'Liked' : 'Like'}
         </button>
       </div>
 

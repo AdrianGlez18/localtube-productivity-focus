@@ -8,6 +8,7 @@ type VideoCollectionGridProps = {
     error: string | null;
     videos: LikedVideo[] | WatchLaterVideo[];
     handleVideoClick: (youtubeId: string) => void;
+    handleDelete: (id: number) => void;
 }
 
 const VideoCollectionGrid = ({
@@ -16,7 +17,8 @@ const VideoCollectionGrid = ({
     isLoading,
     error,
     videos,
-    handleVideoClick
+    handleVideoClick,
+    handleDelete,
 }: VideoCollectionGridProps) => {
     return (
         <div className="px-4 flex flex-col gap-4 @container">
@@ -43,14 +45,18 @@ const VideoCollectionGrid = ({
                     page === 'liked' ? (
                         <LikedVideoCard 
                             key={video.id} 
-                            video={video} 
+                            video={video}
+                            isLoading={isLoading}
                             handleVideoClick={handleVideoClick}
+                            handleDelete={handleDelete}
                         />
                     ) : page === 'later' ? (
                         <LikedVideoCard
                             key={video.id}
                             video={video}
+                            isLoading={isLoading}
                             handleVideoClick={handleVideoClick}
+                            handleDelete={handleDelete}
                         />
                     ) : (
                         <p>Test</p>

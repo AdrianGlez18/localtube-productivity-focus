@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { LikedVideo } from "@/types/sqlite-schemas";
 import { useNavigate } from "react-router-dom";
 import VideoCollectionGrid from "@/components/VideoCollectionGrid";
-import { getWatchLaterVideos } from "@/db/watch-later";
+import { deleteWatchLaterVideo, getWatchLaterVideos } from "@/db/watch-later";
+import { toast } from "sonner";
 
 const WatchLaterPage = () => {
     const [videos, setVideos] = useState<LikedVideo[]>([]);
@@ -31,6 +32,22 @@ const WatchLaterPage = () => {
         navigate(`/video/${youtubeId}`);
     };
 
+    const handleDelete = (id: number) => {
+        try {
+            setIsLoading(true);
+            deleteWatchLaterVideo(id);
+            setVideos((prevVideos) => prevVideos.filter((video) => video.id !== id));
+            setTimeout(() => {
+                toast.success("Video deleted");
+            }, 500);
+        } catch (error) {
+            toast.error("Failed to delete video");
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <VideoCollectionGrid
             page='later'
@@ -39,6 +56,7 @@ const WatchLaterPage = () => {
             isLoading={isLoading}
             videos={videos}
             handleVideoClick={handleVideoClick}
+            handleDelete={handleDelete}
         />
     );
 };

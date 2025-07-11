@@ -46,3 +46,14 @@ export async function checkIfSubscribed(id: string) {
         return false;
     }
 }
+
+export async function deleteSubscription(youtubeId: string) {
+    try {
+        const db = await Database.load("sqlite:database.db");
+        await db.execute("DELETE FROM subscriptions WHERE channel_id = $1", [youtubeId]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

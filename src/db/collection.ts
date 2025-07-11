@@ -33,3 +33,14 @@ export async function saveToCollection(video: CollectionVideo) {
         return false;
     }
 }
+
+export async function deleteVideoFromCollection(youtubeId: string) {
+    try {
+        const db = await Database.load("sqlite:database.db");
+        await db.execute("DELETE FROM video_collection WHERE youtube_id = $1", [youtubeId]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

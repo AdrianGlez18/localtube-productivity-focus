@@ -31,3 +31,14 @@ export async function setWatchLaterVideo(video: YoutubeAPIVideo) {
         return false;
     }
 }
+
+export async function deleteWatchLaterVideo(id: number) {
+    try {
+        const db = await Database.load("sqlite:database.db");
+        await db.execute("DELETE FROM watch_later WHERE id = $1", [id]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

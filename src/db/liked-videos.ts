@@ -42,3 +42,14 @@ export async function checkIfVideoLiked(id: string) {
         return false;
     }
 }
+
+export async function deleteLikedVideo(id: number) {
+    try {
+        const db = await Database.load("sqlite:database.db");
+        await db.execute("DELETE FROM liked_videos WHERE id = $1", [id]);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}

@@ -8,6 +8,7 @@ const CollectionPage = () => {
     useEffect(() => {
         const fetchVideos = async () => {
             const videos = await getCollection();
+            console.log(videos);
             setVideos(videos);
         };
         fetchVideos();

@@ -23,7 +23,7 @@ const Sidebar = () => {
   const { pathname } = useLocation();
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <aside className="h-screen items-center justify-center hidden sm:flex">
       <div className={`
         min-h-1/2 bg-white border border-black m-4 rounded-2xl overflow-hidden
          hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
@@ -61,7 +61,7 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 
